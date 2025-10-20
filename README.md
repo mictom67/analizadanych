@@ -1,3 +1,3 @@
 # analizadanych
 
-Analiza danych 2026 sss
+Analiza danych 2026 ssss
