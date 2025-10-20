@@ -1,2 +1,3 @@
 # analizadanych
-Analiza danych
+
+Analiza danych 2026
