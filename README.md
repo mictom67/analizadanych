@@ -1,0 +1,2 @@
+# analizadanych
+Analiza danych
