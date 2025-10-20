@@ -1,2 +1,4 @@
 # analizadanych
 Analiza danych
+jshbcjlbc
+
