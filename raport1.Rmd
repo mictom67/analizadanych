@@ -17,7 +17,7 @@ output:
 
 ```{r setup, include=FALSE}
 ## Global options
-knitr::opts_chunk$set(cache = TRUE)
+knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
 library(tidyverse)
 library(lubridate)
 library(rmdformats)
