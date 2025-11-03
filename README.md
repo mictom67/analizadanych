@@ -1,5 +1,3 @@
 # analizadanych
 
-Analiza danych
-jshbcjlbc
-
+Czemu tu nie ma nic napisane?
