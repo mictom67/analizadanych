@@ -1,6 +1,4 @@
 # analizadanych
-<<<<<<<
-HEAD
 
 Analiza danych 2026
 
@@ -13,4 +11,3 @@ laby
 Paweł teścik- 03.11.2025
 
 TO ja kacper
->>>>>>>
