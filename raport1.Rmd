@@ -3,16 +3,20 @@ title: "Raport z analizy danych"
 date: "`r Sys.Date()`"
 authors: Michał Tomaszewicz, Paweł Tomaszewski, Kacper Żmudowski, Agata Downar
 output:
-  rmdformats::material:
+  rmdformats::html_clean:
     highlight: kate
     theme: "lumen"
     self_contained: true
     number_sections: true
-    code_folding: show
     fig_width: 7
     fig_height: 5
     fig_caption: true
     df_print: paged
+    toc: true           
+    toc_depth: 4     
+    toc_float: true
+    
+        
 ---
 
 ```{r setup, include=FALSE}
@@ -27,12 +31,74 @@ dane <- read_csv("kredyty_new.csv")
 
 # Wstęp
 
-***Celem niniejszego raportu jest analiza danych dotyczących kredytów. Dane zostały wczytane z pliku `kredyty_new.csv` i zawierają informacje o różnych aspektach kredytów udzielanych klientom.***
+**Celem niniejszego raportu jest analiza danych dotyczących kredytów. Dane zostały wczytane z pliku `kredyty_new.csv` i zawierają informacje o różnych aspektach kredytów udzielanych klientom.**
 
-Dane pochodzą ze [strony Kaggle](https://www.kaggle.com/)
+Dane pochodzą ze [strony Kaggle](https://www.kaggle.com/) oraz obejmują **45 000 rekordów** i **14 zmiennych**, które opisują zarówno cechy osób ubiegających się o pożyczkę, jak i parametry samych pożyczek. 
+Zmienną docelową jest **`loan_status`**, określająca decyzję kredytową:  
+`1` – pożyczka zatwierdzona,  
+`0` – pożyczka odrzucona.
 
-```{r data-structure, echo=FALSE}
-dane %>%
-  glimpse() %>%
-  summary(dane)
+Zbiór danych zawiera informacje takie jak wiek, płeć, poziom wykształcenia, roczny dochód, doświadczenie zawodowe, status mieszkaniowy, kwotę i cel pożyczki, oprocentowanie, długość historii kredytowej oraz informację o wcześniejszych zaległościach kredytowych. Dane mają charakter **syntetyczny**, czyli zostały wygenerowane sztucznie, ale w sposób odzwierciedlający rzeczywiste zależności występujące w procesach oceny kredytowej.
+
+Dane te mogą być wykorzystywane w różnych celach analitycznych i badawczych, między innymi:
+
+- **Analiza eksploracyjna (EDA)** – zrozumienie struktury danych, wykrycie wzorców, zależności i rozkładów poszczególnych zmiennych.  
+- **Klasyfikacja** – budowa modeli predykcyjnych pozwalających przewidywać decyzję kredytową (`loan_status`) dla nowych wnioskodawców.  
+- **Regresja** – modelowanie zmiennej ciągłej, np. `credit_score`, w celu przewidywania zdolności kredytowej.  
+- **Analiza jakości danych** – identyfikacja błędów, braków i wartości nielogicznych.  
+- **Symulacje i testowanie algorytmów** – wykorzystanie danych do testowania różnych podejść do oceny ryzyka kredytowego.
+
+
+
+
+## Opis zmiennych
+
+Zbiór danych zawiera 14 zmiennych opisujących osoby ubiegające się o pożyczkę oraz cechy samej pożyczki. Poniższa tabela przedstawia zestawienie wszystkich kolumn wraz z krótkim opisem:
+
+| Nazwa zmiennej | Opis | Typ danych |
+|------|----------|-----|
+| person_age | Wiek osoby | Liczba zmiennoprzecinkowa |
+| person_gender | Płeć osoby | Kategoryczna |
+| person_education | Najwyższy poziom wykształcenia | Kategoryczna |
+| person_income | Roczny dochód | Liczba zmiennoprzecinkowa |
+| person_emp_exp | Lata doświadczenia zawodowego | Liczba całkowita |
+| person_home_ownership | Status własności mieszkania (np. wynajem, własność, hipoteka) | Kategoryczna |
+| loan_amnt | Wnioskowana kwota pożyczki | Liczba zmiennoprzecinkowa |
+| loan_intent | Cel pożyczki | Kategoryczna |
+| loan_int_rate | Oprocentowanie pożyczki | Liczba zmiennoprzecinkowa |
+| loan_percent_income | Kwota pożyczki jako procent rocznego dochodu | Liczba zmiennoprzecinkowa |
+| cb_person_cred_hist_length | Długość historii kredytowej w latach | Liczba zmiennoprzecinkowa |
+| credit_score | Wynik punktowy kredytu | Liczba całkowita |
+| previous_loan_defaults_on_file | Wskaźnik wcześniejszych zaległości w spłacie pożyczek | Kategoryczna |
+| loan_status (target variable) | Status zatwierdzenia pożyczki: 1 = zatwierdzona; 0 = odrzucona | Liczba całkowita |
+
+
+
+## Wstępna analiza jakości danych
+
+Przegląd danych wskazuje, że mimo dużej liczby obserwacji (45 000 wierszy), zbiór wymaga wstępnego oczyszczenia i ujednolicenia. Poniżej przedstawiono główne obserwacje dotyczące jakości danych:
+
+- **Braki danych (NA):**
+  - `person_age` – 1 000 braków,
+  - `loan_amnt` – 1 500 braków,
+  - `credit_score` – 1 500 braków.  
+  Braki te mogą wymagać imputacji lub usunięcia wierszy z niepełnymi wartościami.
+
+- **Wartości nielogiczne i odstające:**
+  - `person_age` zawiera wartości do **144 lat**, co jest nierealne,
+  - `person_emp_exp` przyjmuje maksymalnie **125 lat doświadczenia**, co również wskazuje na błąd,
+  - `person_income` osiąga wartości powyżej **7 200 000 USD**, co znacznie odbiega od pozostałych danych.
+
+- **Rozbieżności kategorialne:**
+  - Zmienne tekstowe (`person_gender`, `person_education`, `person_home_ownership`, `loan_intent`) mogą zawierać różne formy zapisu (np. różne wielkości liter), co wymaga standaryzacji.
+  - Zmienna `previous_loan_defaults_on_file` powinna zostać przekodowana do formatu binarnego (np. 0/1) w celu ułatwienia modelowania.
+
+Pomimo tych nieścisłości zbiór stanowi dobrą bazę do analizy danych z zakresu **oceny ryzyka kredytowego**, **modelowania decyzji finansowych** oraz **symulacji procesów kredytowych**. W dalszej części raportu dane zostaną poddane czyszczeniu, wizualizacji i analizie statystycznej w celu przygotowania ich do modelowania predykcyjnego.
+
+
+```{r data-structure, eval=FALSE, include=FALSE, paged.print=TRUE}
+  summary(dane$person_age)
 ```
+
+
+# ????
