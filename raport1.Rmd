@@ -23,6 +23,7 @@ knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
 library(tidyverse)
 library(lubridate)
 library(rmdformats)
+library(dplyr)
 
 dane <- read_csv("kredyty_new.csv")
 ```
