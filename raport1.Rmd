@@ -46,6 +46,15 @@ Dane te mogą być wykorzystywane w różnych celach analitycznych i badawczych,
 -   **Analiza jakości danych** – identyfikacja błędów, braków i wartości nielogicznych.\
 -   **Symulacje i testowanie algorytmów** – wykorzystanie danych do testowania różnych podejść do oceny ryzyka kredytowego.
 
+## Pytania badawcze 
+
+- Które cechy profilu klienta najsilniej korelują z otrzymaniem pozytywnej oceny scoringowej?
+- Jakie są główne różnice w profilu (np. dochód, wiek, stan cywilny) między klientami, którzy otrzymali pozytywną ocenę, a tymi, którzy otrzymali negatywną?
+- Czy wysokość dochodu jest najważniejszym czynnikiem decydującym o przyznaniu kredytu?
+- W jakim stopniu długość posiadanej historii kredytowej wpływa na ostateczny scoring?
+- Czy cel zaciągnięcia kredytu (np. hipoteka vs. kredyt gotówkowy) ma istotny wpływ na ocenę zdolności kredytowej?
+-Która pojedyncza cecha klienta (np. wiek, dochód, czy status zatrudnienia) jest najlepszym predyktorem (wskaźnikiem) niespłacenia pożyczki?
+
 ## Opis zmiennych
 
 Zbiór danych zawiera 14 zmiennych opisujących osoby ubiegające się o pożyczkę oraz cechy samej pożyczki. Poniższa tabela przedstawia zestawienie wszystkich kolumn wraz z krótkim opisem:
