@@ -86,8 +86,41 @@ Przegląd danych wskazuje, że mimo dużej liczby obserwacji (45 000 wierszy), z
 
 Pomimo tych nieścisłości zbiór stanowi dobrą bazę do analizy danych z zakresu **oceny ryzyka kredytowego**, **modelowania decyzji finansowych** oraz **symulacji procesów kredytowych**. W dalszej części raportu dane zostaną poddane czyszczeniu, wizualizacji i analizie statystycznej w celu przygotowania ich do modelowania predykcyjnego.
 
-```{r data-structure, eval=FALSE, include=FALSE, paged.print=TRUE}
-  summary(dane$person_age)
+```{r Badnie danych i formułowanie założeń, eval=FALSE, include=FALSE, paged.print=TRUE}
+
+dane$person_gender
+table(dane$person_gender)
+#git
+table(dane$person_age)
+#do 100, pozbyć się NA
+table(dane$person_education)
+#zamienić na 1-5
+table(dane$person_income)
+#nie może ujemne
+table(dane$person_emp_exp)
+#do 50, nie może być większe od wieku
+table(dane$person_home_ownership)
+#zamienić na 1-4
+table(dane$loan_amnt)
+#nie może być ujemne
+table(dane$loan_intent)
+#zamienić na 1-6
+table(dane$loan_int_rate) 
+summary(dane$loan_int_rate)
+#Nie może być ujemne, nie może być większe niż 100,
+table(dane$loan_percent_income)
+summary(dane$loan_percent_income)
+#Nie może być ujemne,
+table(dane$cb_person_cred_hist_length)
+summary(dane$cb_person_cred_hist_length)
+#Nie może być ujemne, nie może być większe niż wiek - 18
+table(dane$credit_score)
+summary(dane$credit_score)
+#Pozbyć się NA,
+table(dane$previous_loan_defaults_on_file)
+#zamienić na 0-1
+table(dane$loan_status)
+
 ```
 
 # ????
