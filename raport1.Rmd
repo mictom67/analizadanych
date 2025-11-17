@@ -26,6 +26,7 @@ library(rmdformats)
 library(dplyr)
 library(naniar)
 library(finalfit)
+library(VIM)
 
 dane <- read_csv("kredyty_new.csv")
 ```
@@ -98,9 +99,12 @@ Przegląd danych wskazuje, że mimo dużej liczby obserwacji (45 000 wierszy), z
 Pomimo tych nieścisłości zbiór stanowi dobrą bazę do analizy danych z zakresu **oceny ryzyka kredytowego**, **modelowania decyzji finansowych** oraz **symulacji procesów kredytowych**. W dalszej części raportu dane zostaną poddane czyszczeniu, wizualizacji i analizie statystycznej w celu przygotowania ich do modelowania predykcyjnego.
 
 ```{r Badnie danych i formułowanie założeń, eval=FALSE, include=FALSE, paged.print=TRUE}
-
 dane$person_gender
 table(dane$person_gender)
+```
+
+
+```{r Badnie danych i formułowanie założeń, eval=FALSE, include=FALSE, paged.print=TRUE}
 #git
 table(dane$person_age)
 #do 100, pozbyć się NA
@@ -114,6 +118,10 @@ table(dane$person_home_ownership)
 #zamienić na 1-4
 table(dane$loan_amnt)
 #nie może być ujemne
+```
+
+
+```{r Badnie danych i formułowanie założeń, eval=FALSE, include=FALSE, paged.print=TRUE}
 table(dane$loan_intent)
 #zamienić na 1-6
 table(dane$loan_int_rate) 
@@ -134,17 +142,49 @@ table(dane$loan_status)
 
 ```
 
+```{r}
+rules <- validator(
+person_age <= 100
+, person_income >= 0
+, person_emp_exp <= 50
+, person_emp_exp <= person_age - 18
+, loan_amnt >= 0
+, loan_int_rate >= 0
+, loan_int_rate <= 100
+, loan_percent_income >= 0
+, cb_person_cred_hist_length >= 0
+, cb_person_cred_hist_length <= person_age - 18)
+```
+
+```{r}
+cf <- confront (dane, rules)
+barplot(cf, main="dane")
+#as.data.frame(cf) %>% head()
+```
+
 ```{r wykresy braków danych, echo=FALSE, paged.print=TRUE}
-
-
 gg_miss_upset(dane)        # diagram zestawu braków danych
 gg_miss_var(dane)          # liczba NA w zmiennych
 vis_miss(dane)             # SZACHOWNICA braków danych
-
-
 missing_pattern(dane)      # inna szachownica braków danych
+```
 
-
+```{r}
+fixable_data <- replace_errors(dane, rules)
+cf <- confront (fixable_data, rules)
+barplot(cf, main="fixable_data")
+```
+```{r}
+dane_imp <- hotdeck(fixable_data)
+```
+```{r}
+cf <- confront (dane_imp, rules)
+barplot(cf, main="dane_imp")
+```
+```{r}
+fixable_data2 <- replace_errors(dane_imp, rules)
+cf <- confront (fixable_data2, rules)
+barplot(cf, main="fixable_data2")
 ```
 
 # ????
