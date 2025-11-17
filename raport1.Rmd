@@ -24,6 +24,8 @@ library(tidyverse)
 library(lubridate)
 library(rmdformats)
 library(dplyr)
+library(naniar)
+library(finalfit)
 
 dane <- read_csv("kredyty_new.csv")
 ```
@@ -129,6 +131,19 @@ summary(dane$credit_score)
 table(dane$previous_loan_defaults_on_file)
 #zamienić na 0-1
 table(dane$loan_status)
+
+```
+
+```{r wykresy braków danych, echo=FALSE, paged.print=TRUE}
+
+
+gg_miss_upset(dane)        # diagram zestawu braków danych
+gg_miss_var(dane)          # liczba NA w zmiennych
+vis_miss(dane)             # SZACHOWNICA braków danych
+
+
+missing_pattern(dane)      # inna szachownica braków danych
+
 
 ```
 
